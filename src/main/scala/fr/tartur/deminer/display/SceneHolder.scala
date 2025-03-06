@@ -1,5 +1,7 @@
 package fr.tartur.deminer.display
 
+import fr.tartur.deminer.display.components.Scenes
+
 import java.awt.event.WindowEvent
 import java.awt.{CardLayout, Component}
 import javax.swing.{JFrame, JPanel, WindowConstants}
@@ -14,8 +16,8 @@ final class SceneHolder:
   window.setLocationRelativeTo(null)
   window.add(this.root)
 
-  def add(name: String, comp: Component): Component = this.root.add(name, comp)
-  def switch(name: String) = this.cardLayout.show(this.root, name)
+  def add(scene: Scenes, comp: Component): Component = this.root.add(scene.toString, comp)
+  def switch(scene: Scenes) = this.cardLayout.show(this.root, scene.toString)
   def show() = this.window.setVisible(true)
   def hide() = this.window.setVisible(false)
   def close() = this.window.dispatchEvent(WindowEvent(this.window, WindowEvent.WINDOW_CLOSING))

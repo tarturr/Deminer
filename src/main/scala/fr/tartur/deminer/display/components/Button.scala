@@ -3,8 +3,8 @@ package fr.tartur.deminer.display.components
 import fr.tartur.deminer.display.SceneHolder
 
 import java.awt.Color
-import java.awt.event.{ActionEvent, ActionListener}
-import javax.swing.{Action, JButton}
+import java.awt.event.ActionListener
+import javax.swing.JButton
 import javax.swing.border.Border
 
 sealed class Button(label: String, border: Border = null, background: Color = Color.WHITE, foreground: Color = Color.BLACK) extends JButton(label):
@@ -19,7 +19,7 @@ sealed class Button(label: String, border: Border = null, background: Color = Co
 class SceneButton(label: String, holder: SceneHolder, to: Scenes, border: Border = null, background: Color = Color.WHITE, foreground: Color = Color.BLACK) extends Button(label, border, background, foreground):
   super.addActionListener((event) => {
     holder.hide()
-    holder.switch(to.toString)
+    holder.switch(to)
     holder.show()
   })
 
