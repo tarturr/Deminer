@@ -7,8 +7,15 @@ import java.awt.GridLayout
 import javax.swing.JPanel
 import javax.swing.border.EmptyBorder
 
-class Menu(holder: SceneHolder) extends JPanel(GridLayout(3, 1, 0, 40)):
-  super.setBorder(EmptyBorder(80, 40, 80, 40))
-  super.add(Title("Tartine's Deminer"))
-  super.add(PlayButton("Play", holder))
-  super.add(QuitButton(holder))
+class Menu(holder: SceneHolder) extends AbstractMenu(
+  Title("Tartine's Deminer"),
+  {
+    val container = JPanel(GridLayout(2, 1, 0, 40))
+    container.setBorder(EmptyBorder(0, 40, 40, 40))
+
+    container.add(PlayButton("Play", holder))
+    container.add(QuitButton(holder))
+
+    container
+  }
+)
