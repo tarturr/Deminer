@@ -1,7 +1,8 @@
 package fr.tartur.deminer.display.scenes
 
 import fr.tartur.deminer.display.SceneHolder
-import fr.tartur.deminer.display.components.{ColorPalette, SceneButton, Scenes, Title}
+import fr.tartur.deminer.display.components.{ColorPalette, LevelButton, SceneButton, Scenes, Title}
+import fr.tartur.deminer.display.game.GameLevel
 
 import java.awt.{BorderLayout, Color, FlowLayout, GridLayout}
 import javax.swing.JPanel
@@ -13,10 +14,7 @@ class LevelSelector(holder: SceneHolder) extends AbstractMenu(
     val body = JPanel(GridLayout(2, 2, 100, 40))
     body.setBorder(EmptyBorder(0, 100, 0, 100))
 
-    body.add(SceneButton("1", holder, Scenes.Game, background = ColorPalette.Green.color))
-    body.add(SceneButton("2", holder, Scenes.Game, background = ColorPalette.Blue.color))
-    body.add(SceneButton("3", holder, Scenes.Game, background = ColorPalette.Red.color))
-    body.add(SceneButton("4", holder, Scenes.Game, background = Color.BLACK, foreground = Color.WHITE))
+    GameLevel.values.foreach(level => body.add(LevelButton(level, holder)))
 
     body
   },
