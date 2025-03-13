@@ -3,8 +3,7 @@ package fr.tartur.deminer.display.scenes
 import fr.tartur.deminer.display.components.ColorPalette
 import fr.tartur.deminer.display.game.GameLevel
 
-import java.awt.{BorderLayout, GridLayout}
-import java.util.{Timer, TimerTask}
+import java.awt.GridLayout
 import javax.swing.{JButton, JPanel}
 
 class Game(level: GameLevel) extends JPanel:

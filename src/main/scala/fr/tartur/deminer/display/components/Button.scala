@@ -1,7 +1,5 @@
 package fr.tartur.deminer.display.components
 
-import fr.tartur.deminer.display.SceneHolder
-
 import java.awt.{Color, Font}
 import java.awt.event.ActionListener
 import javax.swing.JButton
