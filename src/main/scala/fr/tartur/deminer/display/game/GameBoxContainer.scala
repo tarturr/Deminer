@@ -60,7 +60,7 @@ class GameBoxContainer(private val width: Int) extends PropertyChangeListener:
   private def randomCoords(seed: Random): (Int, Int) = (seed nextInt this.width, seed nextInt this.width)
 
   private def recursiveDiscover(basicBox: BasicBox): Unit =
-    basicBox.doClick()
+    basicBox.discover()
 
     if basicBox.bombsAround == 0 then
       this.neighbors(basicBox.cellX, basicBox.cellY).foreach(box => if !box.isDiscovered then this.recursiveDiscover(box))
