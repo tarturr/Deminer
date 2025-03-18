@@ -4,10 +4,9 @@ import fr.tartur.deminer.display.ImageResources
 import fr.tartur.deminer.display.game.MouseAdapterWrapper
 
 import java.awt.BorderLayout
-import java.awt.event.{MouseAdapter, MouseEvent}
 import java.beans.{PropertyChangeListener, PropertyChangeSupport}
 import javax.swing.border.LineBorder
-import javax.swing.{JButton, JComponent, JLabel}
+import javax.swing.{JButton, JComponent}
 
 abstract sealed class GameBox(val cellX: Int, val cellY: Int, protected val images: ImageResources, borderColor: ColorPalette = ColorPalette.BorderBox) extends JButton:
   private val support = PropertyChangeSupport(this)
