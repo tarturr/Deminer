@@ -11,6 +11,6 @@ class SceneButton(label: String, holder: SceneHolder, to: Scenes, textSize: Int 
 class PlayButton(label: String, holder: SceneHolder) extends SceneButton(label, holder, Scenes.LevelSelector, background = ColorPalette.Blue.color, foreground = Color.WHITE)
 class QuitButton(holder: SceneHolder) extends Button("Quit", _ => holder.close(), 25, null, ColorPalette.Red.color, Color.WHITE)
 class LevelButton(level: GameLevel, holder: SceneHolder) extends Button(level.value.toString, _ => {
-  holder.add(Scenes.Game, Game(level))
+  holder.add(Scenes.Game, Game(level, holder))
   holder.switch(Scenes.Game)
 }, 25, null, level.background, level.foreground)
