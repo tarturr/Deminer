@@ -21,6 +21,7 @@ class Game(level: GameLevel, private val holder: SceneHolder) extends JPanel, Pr
 
   super.setLayout(GridLayout(this.width, this.width))
   this.boxContainer.plantRandomBombs(this.bombCount)
+  this.timer.schedule(() => this.seconds += 1, 0L, 1000L)
 
   for
     y <- 0 until this.width
@@ -29,13 +30,10 @@ class Game(level: GameLevel, private val holder: SceneHolder) extends JPanel, Pr
     val box: GameBox = this.boxContainer(x, y)
     box.addDiscoverListener(this)
     super.add(box)
-    this.timer.schedule(() => this.seconds += 1, 0L, 1000L)
 
   private def recursiveDiscover(basicBox: BasicBox): Unit =
-    basicBox.discover()
-    println(s"Discovered box (${basicBox.cellX},${basicBox.cellY})")
+    basicBox.discover(false)
     this.boxCount -= 1
-    println(this.boxCount)
 
     if basicBox.bombsAround == 0 then
       this.boxContainer.neighbors(basicBox.cellX, basicBox.cellY).foreach(box => if !box.isDiscovered then this.recursiveDiscover(box))
@@ -46,11 +44,13 @@ class Game(level: GameLevel, private val holder: SceneHolder) extends JPanel, Pr
     if !operation.equals("discovered") then
       throw UnsupportedOperationException(s"Unsupported operation: $operation")
 
+    val discoveredByUser = event.getOldValue.asInstanceOf[Boolean]
     val box = event.getNewValue.asInstanceOf[GameBox]
 
-    box match
-      case basic: BasicBox => this.recursiveDiscover(basic)
-      case _ => ???
+    if discoveredByUser then
+      box match
+        case basic: BasicBox => this.recursiveDiscover(basic)
+        case _ => ???
 
-    if this.boxCount == 0 then
-      this.holder.force(Scenes.GameOver, GameWon(this.seconds, this.holder))
+      if this.boxCount == 0 then
+        this.holder.force(Scenes.GameOver, GameWon(this.seconds, this.holder))

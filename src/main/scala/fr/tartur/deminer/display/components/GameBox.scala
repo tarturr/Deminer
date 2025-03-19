@@ -18,15 +18,15 @@ abstract sealed class GameBox(val cellX: Int, val cellY: Int, protected val imag
   super.setFocusable(false)
   super.setLayout(BorderLayout())
   super.setBackground(if this.isEven then ColorPalette.EvenBox.color else ColorPalette.OddBox.color)
-  super.addMouseListener(MouseAdapterWrapper(this.discover, this.flag))
+  super.addMouseListener(MouseAdapterWrapper(() => this.discover(), this.flag))
 
   def addDiscoverListener(listener: PropertyChangeListener): Unit = this.support.addPropertyChangeListener(listener)
   def isDiscovered: Boolean = this.discovered
-  def discover(): Unit =
+  def discover(byUser: Boolean = true): Unit =
     if !this.discovered then
       this.onDiscover()
       this.discovered = true
-      this.support.firePropertyChange("discovered", null, this)
+      this.support.firePropertyChange("discovered", byUser, this)
   def flag(): Unit =
     if !this.discovered then
       super.setIcon(if this.flagged then null else this.images.flag)
