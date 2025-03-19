@@ -37,6 +37,11 @@ class GameBoxContainer(private val width: Int):
       this(x, y).asInstanceOf[BasicBox]
     ).toArray
 
+  def bombs(): Array[BombBox] =
+    this.container.filter(_.isInstanceOf[BombBox])
+      .map(box => box.asInstanceOf[BombBox])
+      .toArray
+
   def apply(x: Int, y: Int): GameBox =
     if !this.exists(x, y) then
       throw IndexOutOfBoundsException("Trying to reach a game box at an out of bounds position")

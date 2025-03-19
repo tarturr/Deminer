@@ -1,7 +1,7 @@
 package fr.tartur.deminer.display.scenes
 
 import fr.tartur.deminer.display.SceneHolder
-import fr.tartur.deminer.display.components.{BasicBox, GameBox, Scenes}
+import fr.tartur.deminer.display.components.{BasicBox, BombBox, GameBox, Scenes}
 import fr.tartur.deminer.display.game.{GameBoxContainer, GameLevel}
 
 import java.awt.GridLayout
@@ -38,6 +38,30 @@ class Game(level: GameLevel, private val holder: SceneHolder) extends JPanel, Pr
     if basicBox.bombsAround == 0 then
       this.boxContainer.neighbors(basicBox.cellX, basicBox.cellY).foreach(box => if !box.isDiscovered then this.recursiveDiscover(box))
 
+  // TODO: Make the game "freeze", so that the player cannot hit other game boxes.
+  private def lose(start: BombBox): Unit =
+    this.timer.cancel()
+    val bombs = this.boxContainer.bombs()
+    var index = bombs.size - 1
+
+    val delayedExplosion = Timer()
+
+    delayedExplosion.scheduleAtFixedRate(() => {
+      var current = bombs(index)
+
+      if current == start then
+        index -= 1
+
+      if index >= 0 then
+        current = bombs(index)
+        current.discover(false)
+
+      if index <= 0 then
+        delayedExplosion.cancel()
+      else
+        index -= 1
+    }, 500L, 500L)
+
   override def propertyChange(event: PropertyChangeEvent): Unit =
     val operation = event.getPropertyName
 
@@ -50,7 +74,7 @@ class Game(level: GameLevel, private val holder: SceneHolder) extends JPanel, Pr
     if discoveredByUser then
       box match
         case basic: BasicBox => this.recursiveDiscover(basic)
-        case _ => ???
+        case bomb: BombBox => this.lose(bomb)
 
       if this.boxCount == 0 then
         this.holder.force(Scenes.GameOver, GameWon(this.seconds, this.holder))
