@@ -38,11 +38,11 @@ class Game(level: GameLevel, private val holder: SceneHolder) extends JPanel, Pr
     if basicBox.bombsAround == 0 then
       this.boxContainer.neighbors(basicBox.cellX, basicBox.cellY).foreach(box => if !box.isDiscovered then this.recursiveDiscover(box))
 
-  // TODO: Make the game "freeze", so that the player cannot hit other game boxes.
   private def lose(start: BombBox): Unit =
     this.timer.cancel()
+    this.boxContainer.freeze()
     val bombs = this.boxContainer.bombs()
-    var index = bombs.size - 1
+    var index = bombs.length - 1
 
     val delayedExplosion = Timer()
 
@@ -60,7 +60,7 @@ class Game(level: GameLevel, private val holder: SceneHolder) extends JPanel, Pr
         delayedExplosion.cancel()
       else
         index -= 1
-    }, 500L, 500L)
+    }, 500L, 250L)
 
   override def propertyChange(event: PropertyChangeEvent): Unit =
     val operation = event.getPropertyName

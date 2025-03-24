@@ -10,6 +10,7 @@ import javax.swing.{JButton, JComponent}
 
 abstract sealed class GameBox(val cellX: Int, val cellY: Int, protected val images: ImageResources, borderColor: ColorPalette = ColorPalette.BorderBox) extends JButton:
   private val support = PropertyChangeSupport(this)
+  private val mouseListener = MouseAdapterWrapper(() => this.discover(), this.flag)
   private var discovered: Boolean = false
   private var flagged: Boolean = false
   protected val isEven: Boolean = (this.cellX + this.cellY) % 2 == 0
@@ -18,16 +19,19 @@ abstract sealed class GameBox(val cellX: Int, val cellY: Int, protected val imag
   super.setFocusable(false)
   super.setLayout(BorderLayout())
   super.setBackground(if this.isEven then ColorPalette.EvenBox.color else ColorPalette.OddBox.color)
-  super.addMouseListener(MouseAdapterWrapper(() => this.discover(), this.flag))
+  super.addMouseListener(mouseListener)
 
   def addDiscoverListener(listener: PropertyChangeListener): Unit = this.support.addPropertyChangeListener(listener)
   def isDiscovered: Boolean = this.discovered
+  
+  def freeze(): Unit = super.removeMouseListener(mouseListener)
+  
   def discover(byUser: Boolean = true): Unit =
     if !this.discovered then
       this.onDiscover()
       this.discovered = true
       this.support.firePropertyChange("discovered", byUser, this)
-  def flag(): Unit =
+  private def flag(): Unit =
     if !this.discovered then
       super.setIcon(if this.flagged then null else this.images.flag)
       this.flagged = !this.flagged

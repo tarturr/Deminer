@@ -40,7 +40,9 @@ class GameBoxContainer(private val width: Int):
   def bombs(): Array[BombBox] =
     this.container.filter(_.isInstanceOf[BombBox])
       .map(box => box.asInstanceOf[BombBox])
-      .toArray
+
+  def freeze(): Unit =
+    this.container.foreach(_.freeze())
 
   def apply(x: Int, y: Int): GameBox =
     if !this.exists(x, y) then
