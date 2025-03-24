@@ -58,6 +58,7 @@ class Game(level: GameLevel, private val holder: SceneHolder) extends JPanel, Pr
 
       if index <= 0 then
         delayedExplosion.cancel()
+        Timer().schedule(() => this.holder.force(Scenes.GameOver, GameOver(this.seconds, this.holder)), 3000L)
       else
         index -= 1
     }, 500L, 250L)
